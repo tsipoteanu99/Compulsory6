@@ -48,7 +48,7 @@ public class ControlPanel extends JPanel {
 
     private void save(ActionEvent e) {
         try {
-            ImageIO.write(frame.canvas.image, "PNG", new File("d:/test.png"));
+            ImageIO.write(frame.canvas.image, "PNG", new File("test.png"));
         } catch (
                 IOException ex) {
             System.err.println(ex);
@@ -57,7 +57,7 @@ public class ControlPanel extends JPanel {
 
     private void load(ActionEvent e) {
         try {
-            File loadedImage = new File("d:/test.png");
+            File loadedImage = new File("test.png");
             frame.canvas.image = ImageIO.read(loadedImage);
             frame.canvas.graphics = frame.canvas.image.createGraphics();
         } catch (IOException ex) {
