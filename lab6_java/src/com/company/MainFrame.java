@@ -16,6 +16,7 @@ public class MainFrame extends JFrame {
     ConfigPanel configPanel;
     com.company.ControlPanel controlPanel;
     DrawingPanel canvas;
+    ShapesPanel shapesPanel;
 
     public MainFrame(){
         super("My drawing app");
@@ -29,10 +30,12 @@ public class MainFrame extends JFrame {
         canvas = new DrawingPanel(this);
         configPanel = new ConfigPanel(this);
         controlPanel = new com.company.ControlPanel(this);
+        shapesPanel = new ShapesPanel(this);
 
         //aranjare componente in frame
         //JFrame uses a BorderLayout by default
         add(canvas, CENTER);
+        add(shapesPanel, BorderLayout.WEST);
         add(configPanel, BorderLayout.NORTH);
         add(controlPanel,BorderLayout.SOUTH);
 

@@ -2,6 +2,7 @@ package com.company;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
@@ -15,6 +16,7 @@ import static com.company.DrawingPanel.W;
  * Am adaugat butoanele de save, load, reset, exit
  * Am setat functionalitatilor butoanelor, prin functiile create ulterior
  * In load am reconstruit BufferedImage-ul cu ajutorul noii imagini luata de la calea data si am actualizat Graphics2D-ul.
+ *     --->> OPTIONAL UPDATE: Am inlocuit calea standard pentru SAVE si LOAD din director cu o cale aleasa cu ajutorul JFileChooser. <<---
  * In reset pur si simplu am creat un nou Offscreen.
  * **/
 
@@ -47,8 +49,17 @@ public class ControlPanel extends JPanel {
     }
 
     private void save(ActionEvent e) {
+
+
+
         try {
-            ImageIO.write(frame.canvas.image, "PNG", new File("test.png"));
+            JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+            int returnValue = jfc.showOpenDialog(null);
+
+            if (returnValue == JFileChooser.APPROVE_OPTION){
+                File selectedFile = jfc.getSelectedFile();
+            ImageIO.write(frame.canvas.image, "PNG", new File(selectedFile.getAbsolutePath()));
+            }
         } catch (
                 IOException ex) {
             System.err.println(ex);
@@ -56,10 +67,15 @@ public class ControlPanel extends JPanel {
     }
 
     private void load(ActionEvent e) {
-        try {
-            File loadedImage = new File("test.png");
-            frame.canvas.image = ImageIO.read(loadedImage);
-            frame.canvas.graphics = frame.canvas.image.createGraphics();
+        try {JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+            int returnValue = jfc.showOpenDialog(null);
+
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = jfc.getSelectedFile();
+                File loadedImage = new File(selectedFile.getAbsolutePath());
+                 frame.canvas.image = ImageIO.read(loadedImage);
+                 frame.canvas.graphics = frame.canvas.image.createGraphics();
+            }
         } catch (IOException ex) {
             System.err.println(ex);
         }

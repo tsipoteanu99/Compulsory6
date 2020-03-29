@@ -6,6 +6,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Arc2D;
+import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
@@ -53,26 +55,47 @@ public class DrawingPanel extends JPanel {
         });
     }
 
-    private void drawShape(int x, int y){
-        Random rand=new Random();
+    private void drawShape(int x, int y) {
+        Random rand = new Random();
 
-        int radius = rand.nextInt(50)+50; //...TODO
-        int sides= (int) frame.configPanel.sidesField.getValue(); //...TODO
+        int radius = rand.nextInt(50) + 50; //...TODO
+        int sides = (int) frame.configPanel.sidesField.getValue();
+        if (frame.shapesPanel.shapes.getSelectedItem().equals("Square"))
+            sides = 4;
 
         int r = rand.nextInt(255);
         int g = rand.nextInt(255);
         int b = rand.nextInt(255);
         int transp = rand.nextInt(255);
-        Color color= new Color(r, g, b,transp); //TODO
-        if (!frame.configPanel.colorCombo.getSelectedItem().equals("Random")) {
-            graphics.setColor(Color.BLACK);
-            graphics.fill(new RegularPolygon(x, y, radius, sides));
-        } else {
-            graphics.setColor(color);
-            graphics.fill(new RegularPolygon(x, y, radius, sides));
-        }
+        Color color = new Color(r, g, b, transp); //TODO
+        if (frame.shapesPanel.shapes.getSelectedItem().equals("Ellipse")) {
+            if (!frame.configPanel.colorCombo.getSelectedItem().equals("Random")) {
+                graphics.setColor(Color.BLACK);
+            } else {
+                graphics.setColor(color);
+            }
+            graphics.fill(new NodeShape(x, y, radius));
 
+        } else {
+            if (frame.shapesPanel.shapes.getSelectedItem().equals("Arc")) {
+                if (!frame.configPanel.colorCombo.getSelectedItem().equals("Random")) {
+                    graphics.setColor(Color.BLACK);
+                } else {
+                    graphics.setColor(color);
+                }
+                graphics.fill(new Arc2D.Double(x, y, rand.nextInt(205)+50, rand.nextInt(205)+50, 0, 100, Arc2D.OPEN));
+            } else {
+                if (!frame.configPanel.colorCombo.getSelectedItem().equals("Random")) {
+                    graphics.setColor(Color.BLACK);
+                } else {
+                    graphics.setColor(color);
+                }
+                graphics.fill(new RegularPolygon(x, y, radius, sides));
+            }
+        }
     }
+
+
     @Override
     public void update(Graphics g){ }
 
